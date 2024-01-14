@@ -26,8 +26,22 @@ func (d *diffTool) LCS(X string, Y string) string {
 			}
 		}
 	}
-	fmt.Println(printMatrix(C))
-	return ""
+	return backtrack(C, X, Y, m-1, n-1)
+}
+
+func backtrack(C [][]int, X string, Y string, i int, j int) string {
+	if i == 0 || j == 0 {
+		return ""
+	}
+	nI := i - 1
+	nJ := j - 1
+	if X[nI] == Y[nJ] {
+		return backtrack(C, X, Y, i-1, j-1) + string(X[nI])
+	}
+	if C[i][j-1] > C[i-1][j] {
+		return backtrack(C, X, Y, i, j-1)
+	}
+	return backtrack(C, X, Y, i-1, j)
 }
 
 func createMatrix(m int, n int) [][]int {

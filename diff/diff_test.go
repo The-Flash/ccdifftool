@@ -1,32 +1,57 @@
 package diff
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestLCSSingleString(t *testing.T) {
-	string1 := "AABCXY"
-	string2 := "XYZ"
-	want := "XY"
-	diffTool := NewDiffTool()
-	fmt.Println(string1, string2)
-	got := diffTool.LCS(string1, string2)
-	if got != want {
-		t.Errorf("got %q, want %q", got, want)
+	type tests struct {
+		name           string
+		X              string
+		Y              string
+		expectedOutput string
 	}
 
-}
-
-func TestLCSSingleString2(t *testing.T) {
-	string1 := "AGCAT"
-	string2 := "GAC"
-	want := "GC"
-	diffTool := NewDiffTool()
-	fmt.Println(string1, string2)
-	got := diffTool.LCS(string1, string2)
-	if got != want {
-		t.Errorf("got %q, want %q", got, want)
+	ts := []tests{
+		{
+			name:           "LCS(AABCXY, XYZ)",
+			X:              "AABCXY",
+			Y:              "XYZ",
+			expectedOutput: "XY",
+		},
+		{
+			name:           "LCS(ABCDEF, ABCDEF)",
+			X:              "ABCDEF",
+			Y:              "ABCDEF",
+			expectedOutput: "ABCDEF",
+		},
+		{
+			name:           "LCS(AABCXY, XYZ)",
+			X:              "AABCXY",
+			Y:              "XYZ",
+			expectedOutput: "XY",
+		},
+		{
+			name:           "LCS('', '')",
+			X:              "",
+			Y:              "",
+			expectedOutput: "",
+		},
+		{
+			name:           "LCS(ABCD, AC)",
+			X:              "ABCD",
+			Y:              "AC",
+			expectedOutput: "AC",
+		},
 	}
 
+	for _, tt := range ts {
+		t.Run(tt.name, func(t *testing.T) {
+			diffTool := NewDiffTool()
+			got := diffTool.LCS(tt.X, tt.Y)
+			if got != tt.expectedOutput {
+				t.Errorf("got %q, want %q", got, tt.expectedOutput)
+			}
+		})
+	}
 }
