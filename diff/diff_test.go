@@ -98,11 +98,23 @@ func TestLCSLines(t *testing.T) {
 	}
 	for _, tt := range ts {
 		t.Run(tt.name, func(t *testing.T) {
-			//			diffTool := NewDiffTool()
-			//			got := diffTool.LCS(tt.X, tt.Y)
-			//			if got != tt.expectedOutput {
-			//				t.Errorf("got %q, want %q", got, tt.expectedOutput)
-			//			}
+			diffTool := NewDiffTool()
+			got := diffTool.LCSLine(tt.X, tt.Y)
+			if !Equal(got, tt.expectedOutput) {
+				t.Errorf("got %q, want %q", got, tt.expectedOutput)
+			}
 		})
 	}
+}
+
+func Equal(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i, v := range a {
+		if v != b[i] {
+			return false
+		}
+	}
+	return true
 }
