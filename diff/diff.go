@@ -29,7 +29,7 @@ func (d *diffTool) LCS(X string, Y string) string {
 	return backtrack(C, X, Y, m-1, n-1)
 }
 
-func (d *diffTool) LCSLine(X []string, Y []string) []string {
+func (d *diffTool) createEditTable(X []string, Y []string) [][]int {
 	m := len(X) + 1
 	n := len(Y) + 1
 	C := createMatrix(m, n)
@@ -47,7 +47,41 @@ func (d *diffTool) LCSLine(X []string, Y []string) []string {
 			}
 		}
 	}
+	return C
+}
+
+func (d *diffTool) LCSLine(X []string, Y []string) []string {
+	m := len(X) + 1
+	n := len(Y) + 1
+	C := d.createEditTable(X, Y)
 	return backtrackLine(C, X, Y, m-1, n-1)
+}
+
+func (d *diffTool) Diff(X []string, Y []string) string {
+	result := ""
+	lcs := d.LCSLine(X, Y)
+
+	for _, x := range X {
+		if !contains(x, lcs) {
+			result += fmt.Sprintf("< %s", x)
+		}
+		for _, y := range Y {
+			if !contains(y, lcs) {
+				result += fmt.Sprintf("> %s", y)
+			}
+		}
+	}
+
+	return result
+}
+
+func contains(x string, X []string) bool {
+	for _, b := range X {
+		if x == b {
+			return true
+		}
+	}
+	return false
 }
 
 func backtrack(C [][]int, X string, Y string, i int, j int) string {
