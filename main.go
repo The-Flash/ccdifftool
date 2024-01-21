@@ -25,8 +25,9 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("cannot open %s", filepath2))
 	}
-	diff := diffTool.Diff(splitLines(string(content1)), splitLines(string(content2)))
-	fmt.Println(diff)
+	X := splitLines(string(content1))
+	Y := splitLines(string(content2))
+	diffTool.Diff(X, Y)
 }
 
 func splitLines(x string) []string {

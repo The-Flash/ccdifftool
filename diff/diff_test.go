@@ -107,46 +107,6 @@ func TestLCSLines(t *testing.T) {
 	}
 }
 
-func TestDiff(t *testing.T) {
-	type tests struct {
-		name           string
-		X              []string
-		Y              []string
-		expectedOutput string
-	}
-	ts := []tests{
-		{
-			name: "Test 2",
-			X: []string{
-				"Coding Challenges helps you become a better software engineer through that build real applications.",
-				"I share a weekly coding challenge aimed at helping software engineers level up their skills through deliberate practice.",
-				"I’ve used or am using these coding challenges as exercise to learn a new programming language or technology.",
-				"Each challenge will have you writing a full application or tool. Most of which will be based on real world tools and utilities.",
-			},
-			Y: []string{
-				"Helping you become a better software engineer through coding challenges that build real applications.",
-				"I share a weekly coding challenge aimed at helping software engineers level up their skills through deliberate practice.",
-				"These are challenges that I’ve used or am using as exercises to learn a new programming language or technology.",
-				"Each challenge will have you writing a full application or tool. Most of which will be based on real world tools and utilities.",
-			},
-			expectedOutput: `< Coding Challenges helps you become a better software engineer through that build real applications.
-> Helping you become a better software engineer through coding challenges that build real applications.
-< I’ve used or am using these coding challenges as exercises to learn a new programming language or technology.
-> These are challenges that I’ve used or am using as exercises to learn a new programming language or technology.`,
-		},
-	}
-	for _, tt := range ts {
-		t.Run(tt.name, func(t *testing.T) {
-			diffTool := NewDiffTool()
-			got := diffTool.Diff(tt.X, tt.Y)
-			if got == tt.expectedOutput {
-				t.Errorf("got %q, want %q", got, tt.expectedOutput)
-			}
-		})
-	}
-
-}
-
 func ListEqual(a, b []string) bool {
 	if len(a) != len(b) {
 		return false

@@ -57,22 +57,34 @@ func (d *diffTool) LCSLine(X []string, Y []string) []string {
 	return backtrackLine(C, X, Y, m-1, n-1)
 }
 
-func (d *diffTool) Diff(X []string, Y []string) string {
-	result := ""
+func (d *diffTool) Diff(X []string, Y []string) {
 	lcs := d.LCSLine(X, Y)
 
-	for _, x := range X {
-		if !contains(x, lcs) {
-			result += fmt.Sprintf("< %s", x)
+	var i, j int
+
+	for _, line := range lcs {
+		for i < len(X) && X[i] != line {
+			fmt.Printf("\033[91m- %s\033[0m\n", X[i])
+			i++
 		}
-		for _, y := range Y {
-			if !contains(y, lcs) {
-				result += fmt.Sprintf("> %s", y)
-			}
+		for j < len(Y) && Y[j] != line {
+			fmt.Printf("\033[92m+ %s\033[0m\n", Y[j])
+			j++
 		}
+		fmt.Printf("+ %s\n", line)
+		i++
+		j++
 	}
 
-	return result
+	for i < len(X) {
+		fmt.Printf("\033[91m- %s\033[0m\n", X[i])
+		i++
+	}
+
+	for j < len(Y) {
+		fmt.Printf("\033[92m+ %s\033[0m\n", Y[j])
+		j++
+	}
 }
 
 func contains(x string, X []string) bool {
